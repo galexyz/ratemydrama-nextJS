@@ -6,9 +6,18 @@ import western from "../assets/western.webp";
 import CategoryFilter from "../components/CategoryFilter";
 import PrimaryButton from "../components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import DramaCard from "../components/DramaCard";
 
 interface MyObject {
     [key: string]: any;
+}
+
+interface Drama {
+    dramaId: number;
+    year: string;
+    name: string;
+    imgUrl: string;
 }
 
 const imgObj = {
@@ -19,11 +28,47 @@ const imgObj = {
 };
 const CategoryView = (props: any) => {
     const { category } = useParams();
+    const [categoryData, setCategoryData] = useState<Array<Drama>>([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!category) return;
+        let endPointObj = {
+            Chinese: "http://localhost:3000/dramas/chinese",
+            Korean: "http://localhost:3000/dramas/korean",
+            Western: "http://localhost:3000/dramas/english",
+            Japanese: "http://localhost:3000/dramas/japanese",
+        };
+        let endPoint = endPointObj[category as keyof typeof endPointObj];
+        fetch(endPoint, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((r) =>
+                r.json().then((data) => {
+                    let dramaArr: Array<Drama> = [];
+                    console.log(data.dramas);
+                    data.dramas.map((drama: any) => {
+                        return dramaArr.push({
+                            year: drama.year,
+                            dramaId: drama.id,
+                            name: drama.name,
+                            imgUrl: drama.imgUrl,
+                        });
+                    });
+                    setCategoryData(dramaArr);
+                })
+            )
+            .catch((e) => console.log(e));
+    }, [category]);
 
     const getValueByKey = (obj: MyObject, key: string) => {
         return obj[key];
     };
+
+    console.log(categoryData);
 
     return (
         <div className="w-full">
@@ -40,12 +85,30 @@ const CategoryView = (props: any) => {
                 </div>
                 <div className="flex flex-row justify-around h-60">
                     <div className="text-xl font-bold text-blue-300">
-                        Listing x {category} Dramas
+                        {`Listing ${
+                            categoryData ? categoryData.length : 0
+                        } Dramas`}
                     </div>
                     <div>
                         <div className="text-sm font-light">Sort By:</div>
                         <CategoryFilter />
                     </div>
+                </div>
+                <div className="grid grid-cols-4 grid-rows-4">
+                    {categoryData.map((drama, key) => {
+                        if (drama) {
+                            return (
+                                <DramaCard
+                                    key={key}
+                                    year={drama.year}
+                                    title={drama.name}
+                                    alt={drama.name}
+                                    imgSrc={drama.imgUrl}
+                                />
+                            );
+                        }
+                        return null;
+                    })}
                 </div>
                 <div className="px-10 pb-20">
                     <div className="w-96 h-48 border-2 rounded-xl px-4">
