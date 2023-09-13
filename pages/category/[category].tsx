@@ -20,6 +20,7 @@ interface Drama {
     year: string;
     name: string;
     imgUrl: string;
+    description: string;
 }
 
 const imgObj = {
@@ -56,6 +57,7 @@ const Category = (props: any) => {
                     data.dramas.map((drama: any) => {
                         return dramaArr.push({
                             year: drama.year,
+                            description: drama.description,
                             dramaId: drama.id,
                             name: drama.name,
                             imgUrl: drama.imgUrl,
@@ -97,18 +99,10 @@ const Category = (props: any) => {
                             <CategoryFilter />
                         </div>
                     </div>
-                    <div className="grid grid-cols-4 grid-rows-4">
+                    <div className="flex flex-col justify-center items-center">
                         {categoryData.map((drama, key) => {
                             if (drama) {
-                                return (
-                                    <DramaCard
-                                        key={key}
-                                        year={drama.year}
-                                        title={drama.name}
-                                        alt={drama.name}
-                                        imgSrc={drama.imgUrl}
-                                    />
-                                );
+                                return <DramaCard key={key} drama={drama} />;
                             }
                             return null;
                         })}
