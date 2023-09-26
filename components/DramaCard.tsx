@@ -7,7 +7,7 @@ interface DramaCardProps {
         dramaId: number;
         name: string | undefined;
         imgUrl: string | undefined;
-        alt: string | undefined;
+        alt?: string | undefined;
         year: string | undefined;
         description: string;
     };
@@ -17,16 +17,19 @@ const DramaCard: React.FC<DramaCardProps> = ({ drama }) => {
     const router = useRouter();
 
     const { category } = router.query; // Access the parameter "slug" from the URL
-
+    if (!drama.name) return <div></div>;
     return (
         <Link
             href={{
-                pathname: `/category/${category}/${drama.name}`,
+                pathname: `/category/${category}/${drama.name.replaceAll(
+                    " ",
+                    "-"
+                )}`,
                 query: { dramaId: drama.dramaId },
             }}
             className="cursor-pointer">
-            <div className="border-grey w-3/5 flex flex-row border-b-2 gap-x-20">
-                <img src={drama.imgUrl} alt={drama.alt} width={80} />
+            <div className="border-grey w-1/2 flex flex-row border-b-2 gap-x-20">
+                <img src={drama.imgUrl} alt={drama.alt} width={100} />
                 <div className="">
                     <div className="text-center text-black font-bold pt-2">{`${drama.name} (${drama.year})`}</div>
                     <div>{`${drama.description.substring(0, 250)}...`}</div>

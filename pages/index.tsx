@@ -67,8 +67,8 @@ const Index = () => {
                     />
                     <CategoryCard
                         imgSrc={western}
-                        alt="western drama"
-                        title="Western"
+                        alt="English drama"
+                        title="English"
                     />
                 </div>
             </div>

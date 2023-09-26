@@ -4,6 +4,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import { useCallback, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { useRouter } from "next/router";
 
 const AddDrama = () => {
     const [hasName, setHasName] = useState(false);
@@ -11,12 +12,15 @@ const AddDrama = () => {
     const [summary, setSummary] = useState("");
     const [imgUrl, setImgUrl] = useState("");
     const [genres, setGenres] = useState([]);
+    const [castList, setCastList] = useState<Array<string>>([]);
     const [language, setLanguage] = useState("");
     const [year, setYear] = useState("");
     const [addedDrama, setAddedDrama] = useState(false);
+    const router = useRouter();
+    const { category } = router.query;
 
     const attemptQueryDetais = useCallback(async () => {
-        fetch(`https://api.tvmaze.com/singlesearch/shows?q=${drama}`)
+        fetch(`https://api.tvmaze.com/singlesearch/shows?q=${drama}&embed=cast`)
             .then((r) => r.json())
             .catch((e) => {
                 console.log(e);
@@ -32,11 +36,23 @@ const AddDrama = () => {
                 setGenres(data.genres);
                 setLanguage(data.language);
                 setYear(data.premiered.split("-")[0]);
+                // const castArr = getCastList(data.id);
+                // setCastList(castArr);
+                let cast = data._embedded.cast;
+                let urlCastList: string[] = [];
+
+                cast.map((cast) => {
+                    return urlCastList.push(cast.person.url);
+                });
+                setCastList(urlCastList);
             })
             .catch((e) => console.log(e));
     }, [drama]);
 
-    const createDrama = useCallback(async () => {
+    const createDrama = useCallback(() => {
+        if (castList.length < 1) {
+            return;
+        }
         fetch("http://localhost:3000/dramas", {
             method: "POST",
             headers: {
@@ -45,6 +61,7 @@ const AddDrama = () => {
             body: JSON.stringify({
                 name: drama,
                 imgUrl: imgUrl,
+                castMembers: castList,
                 description: summary,
                 genres: genres,
                 year: year,
@@ -59,7 +76,7 @@ const AddDrama = () => {
             .catch((error) => {
                 console.error("Error:", error);
             });
-    }, [drama, summary, year, language, genres, imgUrl]);
+    }, [drama, summary, year, language, genres, imgUrl, castList]);
 
     const removeHTMLTags = (input: string) => {
         return input.replace(/<[^>]+>/g, "");
@@ -75,12 +92,16 @@ const AddDrama = () => {
                             Successfully added: {drama}
                         </div>
                         <div className="flex flex-row justify-between bottom-10">
-                            <PrimaryButton text="Add a rating" />
+                            <PrimaryButton
+                                callBack={() => null}
+                                text="Add a rating"
+                            />
                             <PrimaryButton
                                 text="close"
                                 callBack={() => {
                                     setDrama("");
                                     setAddedDrama(false);
+                                    router.push(`/category/${category}`);
                                 }}
                             />
                         </div>
@@ -96,23 +117,41 @@ const AddDrama = () => {
             <Navbar />
             <div className="h-screen w-full bg-white flex flex-row justify-center lg:p-10">
                 {hasName ? (
-                    <div className="w-3/4 h-auto border-blue-200 border mt-10 shadow-xl rounded-2xl">
-                        <div className="text-lg font-bold text-center">
+                    <div className="lg:w-1/2 border-blue-200 border mt-10 shadow-xl rounded-2xl">
+                        <div className="lg:text-2xl text-blue-500 text-lg pb-5 font-bold text-center">
                             Rating for {drama}
                         </div>
                         <div>
-                            <div className="px-5 lg:px-20">{summary}</div>
+                            <div className="mx-5 lg:mx-10 border-2 p-5 border-blue-300 border-dotted text-blue-700 rounded-xl shadow-lg">
+                                {summary}
+                            </div>
                             {imgUrl && (
                                 <div className="flex flex-row justify-around pt-20">
                                     <img
-                                        width={"20%"}
+                                        className="shadow-lg border-2 rounded-xl border-blue-500"
+                                        width={"25%"}
                                         src={imgUrl}
                                         alt="drama"
                                     />
-                                    <div className="text-lg">
-                                        <div>Year: {year}</div>
-                                        <div>Language: {language}</div>
-                                        <div>Genres: {genres.join()}</div>
+                                    <div className="text-lg text-blue-500">
+                                        <div className="flex flex-row gap-x-5">
+                                            <div className="text-xl font-bold">
+                                                Year:{" "}
+                                            </div>{" "}
+                                            {year}
+                                        </div>
+                                        <div className="flex flex-row gap-x-5">
+                                            <div className="text-xl font-bold">
+                                                Language:{" "}
+                                            </div>{" "}
+                                            {language}
+                                        </div>
+                                        <div className="flex flex-row gap-x-5 pb-10">
+                                            <div className="text-xl font-bold">
+                                                Genres:{" "}
+                                            </div>{" "}
+                                            {genres.join()}
+                                        </div>
                                         <PrimaryButton
                                             text="Add Drama"
                                             callBack={createDrama}
@@ -126,10 +165,12 @@ const AddDrama = () => {
                     <div className="mt-20 w-1/2 h-2/3 border-blue-200 rounded-2xl shadow-2xl p-5">
                         <div>
                             <BackButton />
-                            <div className="text-lg font-semibold text-center">
-                                Add a Drama to the xxx category
+                            <div className="text-lg font-semibold text-center text-blue-500">
+                                Add a Drama
                             </div>
-                            <div className="text-center pt-5">Drama Name</div>
+                            <div className="text-center py-5 text-blue-500">
+                                Drama Name
+                            </div>
                             <div className="flex flex-row justify-center">
                                 <input
                                     value={drama}

@@ -3,6 +3,9 @@ import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import Image from "next/image";
 import BackButton from "../../../components/BackButton";
+import PrimaryButton from "../../../components/PrimaryButton";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {
     try {
@@ -46,6 +49,7 @@ interface DramaProps {
             id: number;
             imgUrl: string;
             language: string;
+            castMembers;
             name: string;
             updatedAt: Date;
             year: string;
@@ -55,7 +59,11 @@ interface DramaProps {
 
 const DramaName: React.FC<DramaProps> = ({ data }) => {
     const drama = data.drama;
+    const router = useRouter();
 
+    const { category } = router.query;
+
+    console.log(drama);
     return (
         <>
             <Navbar />
@@ -82,6 +90,34 @@ const DramaName: React.FC<DramaProps> = ({ data }) => {
                             </div>
                         </div>
                         <div className="text-blue-300 text-xl">
+                            Cast:{" "}
+                            {drama.castMembers.map((cast) => {
+                                return (
+                                    <>
+                                        <div
+                                            onClick={() =>
+                                                window.open(cast, "_blank")
+                                            }
+                                            className="inline gap-x-5 text-lg text-blue-500 cursor-pointer underline">
+                                            {`${
+                                                cast
+                                                    .split("/")
+                                                    .pop()
+                                                    .replace("-", " ")
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                cast
+                                                    .split("/")
+                                                    .pop()
+                                                    .replace("-", " ")
+                                                    .slice(1)
+                                            },  `}
+                                        </div>
+                                    </>
+                                );
+                            })}
+                        </div>
+                        <div className="text-blue-300 text-xl">
                             Language:{" "}
                             <div className="inline gap-x-5 text-lg text-blue-500">
                                 {drama.language}
@@ -92,6 +128,20 @@ const DramaName: React.FC<DramaProps> = ({ data }) => {
                 </div>
                 <div>
                     <div>Current Rating: </div>
+                    <Link
+                        href={{
+                            pathname: `/category/${category}/${drama.name.replaceAll(
+                                " ",
+                                "-"
+                            )}/add-review`,
+                            query: { dramaId: drama.id },
+                        }}>
+                        <PrimaryButton
+                            text="Add Review"
+                            callBack={() => null}
+                            icon="PencilSquareIcon"
+                        />
+                    </Link>
                 </div>
             </div>
             <Footer />
