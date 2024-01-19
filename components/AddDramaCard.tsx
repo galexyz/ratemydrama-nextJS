@@ -13,14 +13,14 @@ const AddDramaCard: React.FC<AddDramaCardProps> = ({ category }) => {
             <div className="text-center text-lg font-bold">
                 Can't find your Drama?
             </div>
-            <div className="text-center pb-10">Add a review here</div>
+            <div className="text-center pb-10">Add a drama here</div>
             <div className="flex flex-row justify-center">
                 <PrimaryButton
                     callBack={() =>
-                        router.push(`/add-drama/${category}
+                        router.push(`/add-drama/
                                     `)
                     }
-                    text="Add Review"
+                    text="Add Drama"
                 />
             </div>
         </div>

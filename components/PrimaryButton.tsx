@@ -20,7 +20,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     return (
         <div
             onClick={callBack}
-            className={`bg-blue-300 w-40 cursor-pointer rounded-full border-2 border-blue-500 flex flex-row items-center justify-around ${
+            className={`bg-txt w-40 cursor-pointer rounded-full border-2 border-primary flex flex-row items-center justify-around ${
                 disabled && "opacity-40"
             }`}>
             {icon && <TheIcon className="w-6 h-6 text-white" />}

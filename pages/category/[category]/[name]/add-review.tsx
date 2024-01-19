@@ -74,17 +74,18 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
                 },
                 body: JSON.stringify({
                     dramaId: drama.id,
-                    rating: rating,
+                    rating: rating * 2,
                     comment: comment,
                     time: dayjs(),
                 }),
             });
             const res = await promise.json();
             console.log(res);
+            router.back();
         } catch (e) {
             console.log("Error submitting review: ", e);
         }
-    }, [rating, comment]);
+    }, [drama.id, rating, comment, router]);
 
     return (
         <>
@@ -93,10 +94,10 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
                 <BackButton />
             </div>
             <div className="flex flex-col items-center gap-y-5">
-                <div className="text-blue-300 w-1/2 self-center text-2xl">
+                <div className="text-txt w-1/2 self-center text-2xl">
                     Add a review for:
                 </div>
-                <div className="text-center text-blue-500 text-2xl">
+                <div className="text-center text-txt text-2xl">
                     {`${drama.name} (${drama.year})`}{" "}
                 </div>
 
@@ -104,16 +105,14 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
                     priority={true}
                     src={drama.imgUrl}
                     alt={drama.name}
-                    className="w-72 h-96 border-2 border-blue-200 rounded-md"
+                    className="w-72 h-96 border-2 border-primary rounded-md"
                     width={100}
                     height={100}
                 />
-                <div className="flex flex-row w-1/2 justify-between items-center pt-10">
+                <div className="flex flex-col lg:flex-row w-11/12 lg:w-1/2 justify-between items-center pt-10">
                     <div>
-                        <div className="text-2xl text-blue-500">
-                            Rate the Drama
-                        </div>
-                        <div className="text-lg text-gray-500">
+                        <div className="text-2xl text-txt">Rate the Drama</div>
+                        <div className="text-lg text-txt">
                             Give the drama a rating out of 5 stars (you can use
                             half a star)
                         </div>
@@ -124,11 +123,11 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
                         allowFraction={true}
                     />
                 </div>
-                <div className="w-1/2">
-                    <div className="text-2xl text-blue-500 self-start">
+                <div className="w-11/12 lg:w-1/2">
+                    <div className="text-2xl text-txt self-start">
                         Write a comment
                     </div>
-                    <div className="text-lg text-gray-500">
+                    <div className="text-lg text-txt">
                         Share your thoughts on the Drama, did you enjoy watching
                         it? would you recommend it to others?
                     </div>
@@ -137,7 +136,7 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
                             onChange={(e) => setComment(e.target.value)}
                             value={comment}
                             placeholder="Write a helpful comment (at least 80 characters)"
-                            className="w-5/6 h-40 border-2 border-blue-400 rounded-lg p-5"
+                            className="w-5/6 h-40 border-2 border-primary rounded-lg p-5"
                         />
                         {comment.length > 0 && comment.length < 80 && (
                             <div className="text-orange-700 absolute">

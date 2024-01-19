@@ -46,5 +46,5 @@
     "typescript.updateImportsOnFileMove.enabled": "always",
     "prettier.bracketSameLine": true,
     "prettier.useEditorConfig": false,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
 }

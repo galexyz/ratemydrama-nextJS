@@ -28,11 +28,14 @@ const DramaCard: React.FC<DramaCardProps> = ({ drama }) => {
                 query: { dramaId: drama.dramaId },
             }}
             className="cursor-pointer">
-            <div className="border-grey w-1/2 flex flex-row border-b-2 gap-x-20">
+            <div className="border-primary w-1/2 flex flex-row border-b-2 gap-x-20">
                 <img src={drama.imgUrl} alt={drama.alt} width={100} />
                 <div className="">
-                    <div className="text-center text-black font-bold pt-2">{`${drama.name} (${drama.year})`}</div>
-                    <div>{`${drama.description.substring(0, 250)}...`}</div>
+                    <div className="text-center text-primary font-bold pt-2">{`${drama.name} (${drama.year})`}</div>
+                    <div className="text-txt">{`${drama.description.substring(
+                        0,
+                        250
+                    )}...`}</div>
                 </div>
             </div>
         </Link>

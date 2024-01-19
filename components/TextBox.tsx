@@ -4,7 +4,7 @@ interface TextBoxProps {
 
 const TextBox: React.FC<TextBoxProps> = ({ text }) => {
     return (
-        <div className="p-5 border border-blue-500 text-blue-700 rounded-lg">
+        <div className="p-5 border border-primary text-txt rounded-lg">
             {text}
         </div>
     );

@@ -6,7 +6,7 @@ const BackButton = () => {
 
     return (
         <div
-            className="flex flex-row cursor-pointer text-blue-500"
+            className="flex flex-row cursor-pointer text-primary"
             onClick={() => router.back()}>
             <ArrowLeftIcon className="h-6 w-6 mr-1" />
             <div>Back</div>
