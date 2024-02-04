@@ -88,7 +88,7 @@ const DramaName: React.FC<DramaProps> = ({ dramaData, reviewData }) => {
             <div className="p-10">
                 <BackButton />
             </div>
-            <div className="flex flex-col items-center gap-y-5">
+            <div className="flex flex-col items-center gap-y-5 h-[1100px]">
                 <div className="text-center text-txt text-2xl">{`${drama.name} (${drama.year})`}</div>
 
                 <div className="w-11/12 items-center lg:w-2/3 flex flex-col lg:flex-row gap-x-5">
@@ -145,7 +145,9 @@ const DramaName: React.FC<DramaProps> = ({ dramaData, reviewData }) => {
                     </div>
                 </div>
                 <div className="px-5">
-                    <div className="text-txt text-xl underline">Reviews: </div>
+                    <div className="text-txt text-xl underline text-center pb-2">
+                        Reviews:{" "}
+                    </div>
                     {reviews.map((review, i) => {
                         return <ReviewCard review={review} key={i} />;
                     })}

@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useRouter } from "next/router";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 const AddDrama = () => {
     const [hasName, setHasName] = useState(false);
@@ -16,11 +17,12 @@ const AddDrama = () => {
     const [castList, setCastList] = useState<Array<string>>([]);
     const [language, setLanguage] = useState("");
     const [year, setYear] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [addedDrama, setAddedDrama] = useState(false);
     const router = useRouter();
     const { category } = router.query;
 
-    const attemptQueryDetais = useCallback(async () => {
+    const attemptQueryDetails = useCallback(async () => {
         fetch(`https://api.tvmaze.com/singlesearch/shows?q=${drama}&embed=cast`)
             .then((r) => r.json())
             .catch((e) => {
@@ -40,7 +42,6 @@ const AddDrama = () => {
                 // setCastList(castArr);
                 let cast = data._embedded.cast;
                 let urlCastList: string[] = [];
-                console.log(cast);
                 cast.map((cast) => {
                     return urlCastList.push(cast.person.url);
                 });
@@ -67,7 +68,16 @@ const AddDrama = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                console.log("data", data);
+                if (
+                    data.message &&
+                    data.message.includes("SequelizeUniqueConstraintError")
+                ) {
+                    console.log("error");
+                    setErrorMsg(
+                        "Uh-oh, it looks like this drama already exists!"
+                    );
+                }
                 setDramaId(data.drama.id);
                 setAddedDrama(true);
             })
@@ -87,12 +97,11 @@ const AddDrama = () => {
         return inputString.replace(regex, "-");
     }
 
-    // http://localhost:3001/add-drama/category/korean/Doctor-Stranger?dramaId=7367
     if (addedDrama) {
         return (
             <>
                 <Navbar />
-                <div className=" w-full bg-white flex flex-row justify-center lg:p-10">
+                <div className=" w-full bg-white flex flex-row justify-center lg:p-10 h-[1000px]">
                     <div className="mt-20 w-11/12 lg:w-1/2 border-primary gap-y-10 rounded-2xl shadow-2xl p-5 flex flex-col justify-between">
                         <div className="text-lg text-txt text-center">
                             Successfully added:
@@ -119,7 +128,7 @@ const AddDrama = () => {
                                 callBack={() => {
                                     setDrama("");
                                     setAddedDrama(false);
-                                    router.push(`/category/${category}`);
+                                    router.back();
                                 }}
                             />
                         </div>
@@ -136,6 +145,16 @@ const AddDrama = () => {
             <div className="min-h-screen w-full flex flex-row justify-center lg:p-10">
                 {hasName ? (
                     <div className="w-11/12 md:w-4/5 xl:w-1/2 border-primary border mt-10 shadow-xl rounded-2xl p-5">
+                        <div
+                            className="flex flex-row cursor-pointer text-primary"
+                            onClick={() => {
+                                setHasName(false);
+                                setDrama("");
+                                setErrorMsg("");
+                            }}>
+                            <ArrowLeftIcon className="h-6 w-6 mr-1" />
+                            <div>Back</div>
+                        </div>
                         <div className="lg:text-2xl text-txt text-lg pb-5 font-bold text-center">
                             Rating for {drama}
                         </div>
@@ -176,6 +195,11 @@ const AddDrama = () => {
                                     </div>
                                 </div>
                             )}
+                            {errorMsg && (
+                                <div className="text-red-400 text-center pt-5">
+                                    {errorMsg}
+                                </div>
+                            )}
                         </div>
                     </div>
                 ) : (
@@ -201,7 +225,7 @@ const AddDrama = () => {
                                     text="Next"
                                     callBack={() => {
                                         setHasName(true);
-                                        attemptQueryDetais();
+                                        attemptQueryDetails();
                                     }}
                                 />
                             </div>

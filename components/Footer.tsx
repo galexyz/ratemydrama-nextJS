@@ -16,8 +16,17 @@ const Footer = () => {
                     <Link href={"/about"} className="cursor-pointer">
                         About
                     </Link>
-                    <div>Privacy Policy</div>
-                    <div>© RateMyDrama 2023</div>
+                    |
+                    <Link href={"/privacy-policy"} className="cursor-pointer">
+                        Privacy Policy
+                    </Link>
+                    |
+                    <Link
+                        href={"/terms-and-conditions"}
+                        className="cursor-pointer">
+                        Terms and Conditions
+                    </Link>
+                    |<div>© RateMyDrama 2024</div>
                 </div>
             </div>
         </div>

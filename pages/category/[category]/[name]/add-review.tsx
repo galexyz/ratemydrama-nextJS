@@ -93,7 +93,7 @@ const AddReview: React.FC<AddReviewProps> = ({ data }) => {
             <div className="p-10">
                 <BackButton />
             </div>
-            <div className="flex flex-col items-center gap-y-5">
+            <div className="flex flex-col items-center gap-y-5 h-[1100px]">
                 <div className="text-txt w-1/2 self-center text-2xl">
                     Add a review for:
                 </div>

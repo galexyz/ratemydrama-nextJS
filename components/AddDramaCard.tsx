@@ -9,11 +9,11 @@ const AddDramaCard: React.FC<AddDramaCardProps> = ({ category }) => {
     const router = useRouter();
 
     return (
-        <div>
-            <div className="text-center text-lg font-bold">
+        <div className="">
+            <div className="text-center text-txt text-sm sm:text-base lg:text-lg font-bold">
                 Can't find your Drama?
             </div>
-            <div className="text-center pb-10">Add a drama here</div>
+            <div className="text-center pb-10 text-txt">Add a drama here</div>
             <div className="flex flex-row justify-center">
                 <PrimaryButton
                     callBack={() =>

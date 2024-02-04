@@ -4,15 +4,18 @@ import korean from "../public/korean.webp";
 import japanese from "../public/japanese.webp";
 import western from "../public/western.jpeg";
 import home from "../public/home1.jpg";
+import action from "../public/action.jpg";
+import adventure from "../public/adventure.jpeg";
+import fantasy from "../public/fantasy.jpeg";
+import comedy from "../public/comedy.jpg";
+import romance from "../public/romance.jpeg";
+import sciFi from "../public/sci-fi.webp";
 import review from "../public/reviews.jpg";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Head from "next/head";
-
-const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 
 const Index = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -86,7 +89,13 @@ const Index = () => {
                                             </div>
                                         );
                                     })}
-                                    <div className="text-white underline px-5 py-2.5 bg-four rounded-b-2xl font-bold border-b border-three cursor-pointer">
+                                    <div
+                                        onClick={() =>
+                                            router.push(
+                                                "http://localhost:3001/add-drama"
+                                            )
+                                        }
+                                        className="text-white underline px-5 py-2.5 bg-four rounded-b-2xl font-bold border-b border-three cursor-pointer">
                                         Add a Drama
                                     </div>
                                 </div>
@@ -128,6 +137,44 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
+                <h2 className="text-center text-2xl text-primary">
+                    Dramas by genre
+                </h2>
+                <div className="grid-cols-1 grid-rows-4 grid md:grid-rows-2 md:grid-cols-2 3xl:flex 2xl:flex-row justify-center gap-x-8 gap-y-8 py-10 px-5">
+                    <CategoryCard
+                        imgSrc={action}
+                        alt="action drama"
+                        title="Action"
+                    />
+                    <CategoryCard
+                        imgSrc={romance}
+                        alt="romance drama"
+                        title="Romance"
+                    />
+                    <CategoryCard
+                        imgSrc={comedy}
+                        alt="comedy drama"
+                        title="Comedy"
+                    />
+                    <CategoryCard
+                        imgSrc={sciFi}
+                        alt="sci-fi drama"
+                        title="Sci-Fi"
+                    />
+                    <CategoryCard
+                        imgSrc={adventure}
+                        alt="adventure drama"
+                        title="Adventure"
+                    />
+                    <CategoryCard
+                        imgSrc={fantasy}
+                        alt="fantasy drama"
+                        title="Fantasy"
+                    />
+                </div>
+                <h2 className="text-center text-2xl text-primary">
+                    Dramas by language
+                </h2>
                 <div className="grid-cols-1 grid-rows-4 grid md:grid-rows-2 md:grid-cols-2 3xl:flex 2xl:flex-row justify-center gap-x-8 gap-y-8 py-10 px-5">
                     <CategoryCard
                         imgSrc={chinese}
