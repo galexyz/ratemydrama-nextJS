@@ -16,7 +16,8 @@ This project is built using:
 
 1. ensure you have cloned the backend repo: https://github.com/galexyz/ratemydrama-backend
 2. Ensure docker containers are up and running to enable connection to the backend.
-3. `npm run dev` to run
+3. `npm install` to install dependencies
+4. `npm run dev` to run
 
 ## Future steps:
 1. hosting backend onto cloud infrastructure
