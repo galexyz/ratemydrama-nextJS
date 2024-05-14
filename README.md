@@ -6,6 +6,11 @@ This project is built using:
 - Typescript
 - tailwindCSS
 
+## Background info
+- A drama or tv  series review website 
+- users can search for their favourite dramas  (or add a new drama using external TVMaze API), view and post their own reviews.
+- search and sort dramas by category, language, popularity, reviews etc.
+- user can like reviews left by other users
 
 ## Getting started
 
